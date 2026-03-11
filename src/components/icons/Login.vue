@@ -1,5 +1,8 @@
 <script setup>
  import { ref } from 'vue'
+ import {useRouter} from "vue-router";
+
+ const router = useRouter();
 
   const rules = {
     required: value => !!value || 'Required.',
@@ -10,6 +13,19 @@
   const show1 = ref(false)
   const show2 = ref(true)
   const password = ref(null)
+  const userName = ref(null)
+
+  function login(){
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'))
+    if (userName.value == userDetails.email && password.value == userDetails.password){
+        //proceed to HomePage
+        router.push('/HomePage')
+        localStorage.setItem("isLoggedIn", true);
+
+    }else {
+        console.log('Invalid Credentials. Try Again')
+    }
+  }
 </script>
 
 <template>
@@ -31,7 +47,7 @@
                                 <div class="text-display-large font-weight-medium text-right">Username</div>
                             </v-col>
                             <v-col md="6">
-                                <v-text-field></v-text-field>
+                                <v-text-field v-model="userName"></v-text-field>
                             </v-col>
                         </v-row>
                             <v-col md="6">
@@ -50,12 +66,14 @@
                     </v-row>
                     <v-row>
                         <v-col md="12">
-                            <v-btn color="#EC8856" variant="elevated">Log in</v-btn>
+                            <v-btn color="#EC8856" variant="elevated" @click="login">Log in</v-btn>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col md="12">
-                            <div>New to MacFit Gym? Create an Account</div>
+                            <div>New to MacFit Gym? 
+                               <router-link to="/signup">Create an Account</router-link> 
+                            </div>
                         </v-col>
                     </v-row>
                 </v-form>
