@@ -18,7 +18,7 @@ function logout(){
         </v-app-bar-title>
         <v-btn to="/homepage">Home</v-btn>
         <v-btn to="/bundles">Bundles</v-btn>
-        <v-btn to="/gym_locations">Our Gyms</v-btn>
+        <v-btn to="/gymLocations">Our Gyms</v-btn>
         <v-btn to="/admin" v-if="isAdmin">Admin</v-btn>
           <v-btn icon="mdi-account" v-if="isLoggedIn">P
             <v-menu activator="parent">

@@ -1,5 +1,33 @@
 <script setup>
+import { ref } from 'vue'
+ import {useRouter} from "vue-router";
 
+ const router = useRouter();
+
+ const showBundleDialog = ref(false)
+ const isLoggedIn = localStorage.getItem("isLoggedIn")
+ const selectedBundle = ref(null)
+ const selectedPrice = ref(null)
+ 
+ function showBundle(name, price){
+    if (isLoggedIn){
+        selectedBundle.value = name
+        selectedPrice.value = price
+        showBundleDialog.value = true //open pop-up
+    }else{
+        router.push('/login')
+    }
+ }
+
+ function subscribe(){
+     const userDetails = JSON.parse(localStorage.getItem('userDetails'))
+     userDetails.subscription = {
+        name: selectedBundle.value,
+        price: selectedPrice.value
+     }
+     localStorage.setItem('userDetails', JSON.stringify(userDetails))
+     showBundleDialog.value = false
+ }
 </script>
 
 <template>
@@ -8,43 +36,46 @@
             <div class="text-display-medium mb=12">Bundles and Pricing</div>
         </v-row>
         <v-row>
+            <div class="text-label-medium font-italic">Click on a bundle to subscribe</div>
+        </v-row>
+        <v-row>
             <v-col md="3">
-                <v-card class="text-center">
+                <v-card class="text-center"@click="showBundle('Daily', 500)">
                     <v-icon color="#EC8856" icon="mdi-calendar-today-outline" size="large" class="mt=8"></v-icon>
-                    <v-card-title color="#EC8856">Daily Pass</v-card-title>
-                    <v-card-title>500 Ksh</v-card-title>
+                    <v-card-title color="#EC8856">Daily</v-card-title>
+                    <v-card-title>Ksh 500 </v-card-title>
 
                 </v-card>
             </v-col>
             <v-col md="3"> 
-                <v-card class="text-center">
+                <v-card class="text-center" @click="showBundle('1 Month', 8000)">
                     <v-icon color="#EC8856" icon="mdi-calendar-month-outline" size="large" class="mt=8"></v-icon>
                     <v-card-title color="#EC8856">1 Month</v-card-title>
-                    <v-card-title>500 Ksh</v-card-title>
+                    <v-card-title>Ksh 8000 </v-card-title>
 
                 </v-card>
             </v-col>
             <v-col md="3"> 
-                <v-card class="text-center">
+                <v-card class="text-center" @click="showBundle('3 Months', 23000)">
                     <v-icon color="#EC8856" icon="mdi-clock-outline" size="large" class="mt=8"></v-icon>
                     <v-card-title color="#EC8856">3 Months</v-card-title>
-                    <v-card-title>500 Ksh</v-card-title>
+                    <v-card-title>Ksh 23000</v-card-title>
 
                 </v-card>
             </v-col>
             <v-col md="3"> 
-                <v-card class="text-center">
+                <v-card class="text-center" @click="showBundle('6 Months', 45000)">
                     <v-icon color="#EC8856" icon="mdi-clock-outline" size="large" class="mt=8"></v-icon>
                     <v-card-title color="#EC8856">6 Months</v-card-title>
-                    <v-card-title>500 Ksh</v-card-title>
+                    <v-card-title>Ksh 45000</v-card-title>
 
                 </v-card>
             </v-col>
             <v-col md="3"> 
-                <v-card class="text-center">
+                <v-card class="text-center" @click="showBundle('1 Year', 88000)">
                     <v-icon color="#EC8856" icon="mdi-timer-sand-full" size="large" class="mt=8"></v-icon>
                     <v-card-title color="#EC8856">1 year</v-card-title>
-                    <v-card-title>500 Ksh</v-card-title>
+                    <v-card-title>Ksh 88000</v-card-title>
 
                 </v-card>
             </v-col>
@@ -119,4 +150,21 @@
             </v-col>
         </v-row>
      </v-container>
+     <!--Dialog-->
+     <v-dialog v-model="showBundleDialog" max-width="600" >
+
+      <v-card prepend-icon="mdi-account" title="Subscribe to Bundle" >
+        <v-card-text>
+          You are about to subscribe to {{ selectedBundle }} at {{ selectedPrice }}. Click on the button below to complete payment
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+         <v-spacer></v-spacer>
+          <v-btn text="Close" variant="plain" @click="showBundleDialog = false" ></v-btn>
+          <v-btn color="primary" variant="tonal" @click="subscribe()" >Subscribe</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 </template>
