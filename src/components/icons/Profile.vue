@@ -1,5 +1,5 @@
 <script setup>
- const userDetails = JSON.parse(localStorage.getItem('userDetails'))
+ const userDetails = JSON.parse(localStorage.getItem('user'))
 
 </script>
 
