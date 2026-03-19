@@ -8,7 +8,7 @@
     <v-row>
         <v-col>
             <v-card>
-                <v-img src="" class="h-50" cover></v-img>
+                <v-img src="profileimage.jpg" class="h-50" cover></v-img>
                 <v-card-title>{{ userDetails.name }}</v-card-title>
                <v-card-text>{{ userDetails.phoneNumber }}</v-card-text>
                <v-card-text>{{ userDetails.email }}</v-card-text>
